@@ -1,3 +1,14 @@
+// mijn eigen super coole ingewikkelde framework
+const Q = {}; // Q staat voor query
+{
+    const dp = (n, v) => { Object.defineProperty(Q, n, { value: v }) };
+    dp("s", function () { return document.querySelector(...arguments) });
+    dp("sa", function () { return document.querySelectorAll(...arguments) });
+    dp("id", function () { return document.getElementById(...arguments) });
+    dp("class", function () { return document.getElementsByClassName(...arguments) });
+    dp("tag", function () { return document.getElementsByTagName(...arguments) });
+}
+
 class GDPR {
 
     constructor() {
@@ -5,71 +16,72 @@ class GDPR {
         this.showContent();
         this.bindEvents();
 
-        if(this.cookieStatus() !== 'accept') this.showGDPR();
+        const status = this.cookieStatus;
+        if (!['accept', 'reject'].includes(status)) this.showGDPR();
     }
 
     bindEvents() {
-        let buttonAccept = document.querySelector('.gdpr-consent__button--accept');
-        buttonAccept.addEventListener('click', () => {
-            this.cookieStatus('accept');
+        Q.s('.gdpr-consent__button--accept').addEventListener('click', () => {
+            this.cookieStatus = 'accept';
             this.showStatus();
             this.showContent();
             this.hideGDPR();
         });
 
+        Q.s('.gdpr-consent__button--reject').addEventListener('click', () => {
+            this.cookieStatus = 'reject';
+            this.showStatus();
+            this.showContent();
+            this.hideGDPR();
+        });
 
-//student uitwerking
-
-
+        Q.s('.gdpr-consent__button--postpone').addEventListener('click', () => {
+            this.hideGDPR();
+        });
     }
 
 
     showContent() {
         this.resetContent();
-        const status = this.cookieStatus() == null ? 'not-chosen' : this.cookieStatus();
-        const element = document.querySelector(`.content-gdpr-${status}`);
-        element.classList.add('show');
 
+        const status = this.cookieStatus ?? 'postpone';
+        const element = Q.s(`.content-gdpr-${status}`);
+
+        if (!element) return;
+
+        element.classList.remove('hide');
     }
 
-    resetContent(){
+    resetContent() {
         const classes = [
             '.content-gdpr-accept',
+            '.content-gdpr-reject',
+            '.content-gdpr-postpone'];
 
-//student uitwerking
-
-            '.content-gdpr-not-chosen'];
-
-        for(const c of classes){
-            document.querySelector(c).classList.add('hide');
-            document.querySelector(c).classList.remove('show');
+        for (const c of classes) {
+            Q.s(c).classList.add('hide');
         }
     }
 
     showStatus() {
-        document.getElementById('content-gpdr-consent-status').innerHTML =
-            this.cookieStatus() == null ? 'Niet gekozen' : this.cookieStatus();
+        const status = this.cookieStatus;
+
+        Q.id('content-gpdr-consent-status').innerHTML = status ?? "Niet gekozen";
     }
 
-    cookieStatus(status) {
-        if (status) localStorage.setItem('gdpr-consent-choice', status);
-
-//student uitwerking
-
+    get cookieStatus() {
         return localStorage.getItem('gdpr-consent-choice');
     }
-
-
-//student uitwerking
-
-
-    hideGDPR(){
-        document.querySelector(`.gdpr-consent`).classList.add('hide');
-        document.querySelector(`.gdpr-consent`).classList.remove('show');
+    set cookieStatus(status) {
+        localStorage.setItem('gdpr-consent-choice', status);
     }
 
-    showGDPR(){
-        document.querySelector(`.gdpr-consent`).classList.add('show');
+    hideGDPR() {
+        Q.s(`.gdpr-consent`).classList.add('hide');
+    }
+
+    showGDPR() {
+        Q.s(`.gdpr-consent`).classList.remove('hide');
     }
 }
 

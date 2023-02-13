@@ -74,17 +74,17 @@
         flex-direction: row;
     }
 
-    .person-name{
+    .person-name {
         order: -1;
     }
 
-    .profile-content__category--hidden-mobile{
+    .profile-content__category--hidden-mobile {
         display: flex;
         flex-direction: column;
     }
 
     /*fix: anders als stipje zichtbaar*/
-    .profile-content__category--hidden-mobile hr{
+    .profile-content__category--hidden-mobile hr {
         width: 100%;
     }
 
@@ -92,7 +92,7 @@
         display: flex;
     }
 
-    .profile-content__element-header{
+    .profile-content__element-header {
         display: flex;
         justify-content: space-between;
     }
@@ -107,4 +107,3 @@
 
 
 /*student uitwerking*/
-
