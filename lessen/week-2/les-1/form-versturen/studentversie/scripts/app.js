@@ -2,7 +2,7 @@ const form = document.querySelector("form");
 const email = document.getElementById("email");
 const emailError = document.querySelector("#email + span.error");
 
-email.addEventListener("input", (event) => {
+email.addEventListener("input", e => {
     // Each time the user types something, we check if the
     // form fields are valid.
 
@@ -17,14 +17,23 @@ email.addEventListener("input", (event) => {
     }
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async e => {
+    e.preventDefault(); // dont redirect, use ajax instead. 
+
     // if the email field is valid, we let the form submit
+    // If it isn't, we display an appropriate error message
     if (!email.validity.valid) {
-        // If it isn't, we display an appropriate error message
         showError();
-        // Then we prevent the form from being sent by canceling the event
-        event.preventDefault();
+        return;
     }
+
+    const response = await fetch(e.target.action, {
+        method: e.target.method.toUpperCase(),
+        headers: { "Content-Type": "application/json" },
+        body: formdata_json(new FormData(form))
+    })
+
+    document.getElementById("result").innerHTML = JSON.stringify(await response.json(), null, 2);
 
 });
 
@@ -45,4 +54,10 @@ function showError() {
 
     // Set the styling appropriately
     emailError.className = "error active";
+}
+
+function formdata_json(formdata) {
+    const object = {};
+    formdata.forEach((value, key) => object[key] = value);
+    return JSON.stringify(object);
 }

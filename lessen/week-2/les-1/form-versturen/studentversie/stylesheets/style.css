@@ -52,7 +52,11 @@ input:focus:invalid {
 }
 
 .error.active {
-display: block;
+    display: block;
     margin-bottom: 4px;
     padding: 0.3em;
+}
+
+#result {
+    background-color: #ccc;
 }
