@@ -7,6 +7,7 @@ const appTemplate = {
         <div class="cirkels">
             <click-cirkel id="cirkel-1" color="red">a</click-cirkel>
             <click-cirkel id="cirkel-2" color="blue">b</click-cirkel>
+            <click-vierkant id="cirkel-2" color="blue">b</click-vierkant>
         </div>
     </div> 
     `
@@ -17,6 +18,15 @@ const cirkelTemplate = {
     template: `
     <div class="cirkel">
         <p data-bind="cirkelClicks"></p>
+    </div>
+    `
+}
+
+const vierkantTemplate = {
+    id: 'vierkant-template',
+    template: `
+    <div class="vierkant">
+        <p data-bind="vierkantClicks"></p>
     </div> 
     `
 }
@@ -26,6 +36,7 @@ class Template{
     attachTemplates(){
         this.attachTemplate(appTemplate);
         this.attachTemplate(cirkelTemplate);
+        this.attachTemplate(vierkantTemplate);
     }
 
     attachTemplate(tplObject){
