@@ -1,44 +1,14 @@
+console.log("MODULE template");
 
-const appTemplate = {
-    id: 'click-app-tpl',
-    template: `
-    <div id="app" class="app">
-        <h1>Blokken</h1>
-        <button>reset</button>
-        <div class="container">
-            <click-cirkel color=""></click-cirkel>
-            
-        </div>
-    </div> 
-    `
-}
+class Template {
 
-const cirkelTemplate = {
-    id: 'click-cirkel-tpl',
-    template: `
-    <div class="cirkel">
-        <p data-bind="cirkel-nummer"></p>
-    </div> 
-    `
-}
+    // returns a function that can be used to get a copy of the template.
+    static new(template_string) {
+        const template = document.createElement('template');
+        template.innerHTML = template_string;
 
-class Template{
-
-    attachTemplates(){
-        this.attachTemplate(appTemplate);
-        this.attachTemplate(cirkelTemplate);
+        return () => template.content.cloneNode(true);
     }
-
-    attachTemplate(tplObject){
-        const templateNode = document.createElement('template');
-        templateNode.id = tplObject.id;
-        templateNode.innerHTML = tplObject.template;
-        const body = document.querySelector('body');
-        body.appendChild(templateNode);
-    }
-
 }
 
-const template = new Template();
-
-export {template};
+export { Template };
