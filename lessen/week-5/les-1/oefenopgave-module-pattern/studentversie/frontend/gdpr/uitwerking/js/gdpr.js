@@ -1,75 +1,67 @@
-
+{
     const init = () => {
         showStatus();
         showContent();
-        bindEvents();
-
-        if(cookieStatus() !== 'accept') showGDPR();
-    }
-
-    const bindEvents = () => {
-        let buttonAccept = document.querySelector('.gdpr-consent__button--accept');
+        
+        // bind events
+        const buttonAccept = document.querySelector('.gdpr-consent__button--accept');
         buttonAccept.addEventListener('click', () => {
-            cookieStatus('accept');
+            set_cookiestatus('accept');
             showStatus();
             showContent();
             hideGDPR();
         });
+        
+        const buttonReject = document.querySelector('.gdpr-consent__button--reject');
+        buttonReject.addEventListener('click', () => {
+            hideGDPR();
+        });
 
-
-//student uitwerking
-
-
+        if(get_cookiestatus() !== 'accept') showGDPR();
     }
 
     const showContent = () => {
-        resetContent();
-        const status = cookieStatus() == null ? 'not-chosen' : cookieStatus();
-        const element = document.querySelector(`.content-gdpr-${status}`);
-        element.classList.add('show');
-
-    }
-
-    const resetContent = () => {
+        
+        // first reset the content
         const classes = [
             '.content-gdpr-accept',
-
-//student uitwerking
-
             '.content-gdpr-not-chosen'];
 
         for(const c of classes){
             document.querySelector(c).classList.add('hide');
             document.querySelector(c).classList.remove('show');
         }
+
+        // then show it
+        const status = get_cookiestatus() ?? 'not-chosen';
+        const element = document.querySelector(`.content-gdpr-${status}`);
+        element.classList.add('show');
+
     }
 
     const showStatus = () => {
-        document.getElementById('content-gpdr-consent-status').innerHTML =
-            cookieStatus() == null ? 'Niet gekozen' : cookieStatus();
+        document.getElementById('content-gpdr-consent-status').innerHTML = get_cookiestatus()  ?? 'Niet gekozen';
     }
 
-    const cookieStatus = (status) => {
-        if (status) localStorage.setItem('gdpr-consent-choice', status);
+    const storage_name_cookie_status = 'gdpr-consent-choice';
 
-//student uitwerking
+    const get_cookiestatus = () => localStorage.getItem(storage_name_cookie_status);
 
-        return localStorage.getItem('gdpr-consent-choice');
+    const set_cookiestatus = status => {
+        if (!status) return;
+        localStorage.setItem(storage_name_cookie_status, status);
     }
 
-
-//student uitwerking
-
-
+    const consent_elem = document.querySelector(`.gdpr-consent`)
+    
     const hideGDPR = () => {
-        document.querySelector(`.gdpr-consent`).classList.add('hide');
-        document.querySelector(`.gdpr-consent`).classList.remove('show');
+        consent_elem.classList.add('hide');
+        consent_elem.classList.remove('show');
     }
 
     const showGDPR = () => {
-        document.querySelector(`.gdpr-consent`).classList.add('show');
+        consent_elem.classList.add('show');
     }
 
-
-init();
-
+    init();
+}
