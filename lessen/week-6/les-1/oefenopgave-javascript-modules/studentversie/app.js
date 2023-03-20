@@ -1,4 +1,4 @@
-
+import {Log} from "./log.js"
 
 //student uitwerking
 
